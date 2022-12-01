@@ -1,3 +1,4 @@
-pub mod task1;
-
 mod readfiles;
+
+pub mod task1;
+pub mod task2;
