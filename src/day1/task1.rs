@@ -6,8 +6,8 @@ pub fn main() {
     let mut max = 0;
     let mut current = 0;
 
-    for i in values {
-        match i {
+    for v in values {
+        match v {
             Some(x) => {
                 current += x;
             },
@@ -15,6 +15,7 @@ pub fn main() {
                 if current > max {
                     max = current;
                 };
+
                 current = 0;
             }
         }
