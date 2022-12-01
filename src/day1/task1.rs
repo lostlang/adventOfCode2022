@@ -10,7 +10,7 @@ pub fn main() {
         match v {
             Some(x) => {
                 current += x;
-            },
+            }
             None => {
                 if current > max {
                     max = current;

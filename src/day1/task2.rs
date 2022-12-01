@@ -10,12 +10,12 @@ pub fn main() {
         match v {
             Some(x) => {
                 current += x;
-            },
+            }
             None => {
                 if current > max.0 {
                     max = (current, max.1, max.2);
                 };
-                
+
                 max = sort(max);
 
                 current = 0;
