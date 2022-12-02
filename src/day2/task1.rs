@@ -1,6 +1,6 @@
 use crate::day2;
 
-enum GameState {
+pub enum GameState {
     Rock,
     Paper,
     Scissors,
@@ -35,7 +35,7 @@ pub fn main() {
     println!("Task 1: {}", sum);
 }
 
-fn get_winer(p1: &GameState, p2: &GameState) -> i32 {
+pub fn get_winer(p1: &GameState, p2: &GameState) -> i32 {
     match p1 {
         GameState::Rock => match p2 {
             GameState::Rock => 3,
@@ -55,7 +55,7 @@ fn get_winer(p1: &GameState, p2: &GameState) -> i32 {
     }
 }
 
-fn get_point(p1: &GameState) -> i32 {
+pub fn get_point(p1: &GameState) -> i32 {
     match p1 {
         GameState::Rock => 1,
         GameState::Paper => 2,
