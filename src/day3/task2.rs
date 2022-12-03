@@ -1,4 +1,5 @@
 use crate::day3;
+use crate::day3::task1::convert_to_int;
 use std::collections::HashMap;
 
 pub fn main() {
@@ -22,7 +23,7 @@ pub fn main() {
             match map.get(&c) {
                 Some(_) => match map2.get(&c) {
                     Some(_) => {
-                        let b = day3::task1::convert_to_int(c);
+                        let b = convert_to_int(c);
                         count += b;
                         continue 'word;
                     }

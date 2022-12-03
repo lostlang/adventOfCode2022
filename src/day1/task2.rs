@@ -15,7 +15,6 @@ pub fn main() {
                 if current > max.0 {
                     max = (current, max.1, max.2);
                 };
-
                 max = sort(max);
 
                 current = 0;
