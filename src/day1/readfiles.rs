@@ -9,9 +9,7 @@ pub fn read() -> Vec<Option<u32>> {
 
     for line in reader.lines() {
         let line = line.expect("Unable to read line");
-
         let number: Option<u32> = line.parse().ok();
-
         vec.push(number);
     }
 
