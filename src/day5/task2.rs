@@ -15,7 +15,7 @@ pub fn main() {
         columns[(comand[2] - 1) as usize] = block;
     }
 
-    print!("Task 1: ");
+    print!("Task 2: ");
     for i in 0..columns.len() {
         print!("{}", columns[i][0]);
     }
