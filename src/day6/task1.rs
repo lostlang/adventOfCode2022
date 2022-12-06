@@ -19,7 +19,7 @@ pub fn main() {
     println!("Task 1: {}", i + 4);
 }
 
-fn shift(word: &str) -> i32 {
+pub fn shift(word: &str) -> i32 {
     let mut count = -1;
 
     for i in 0..word.len() {
