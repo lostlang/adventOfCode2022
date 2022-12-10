@@ -3,7 +3,6 @@ use std::cmp;
 use std::collections::HashSet;
 
 pub fn main() {
-    println!("Task 1");
     let values = day9::readfiels::read();
     let mut head = (0, 0);
     let mut tail = (0, 0);
@@ -17,7 +16,7 @@ pub fn main() {
         }
     }
 
-    println!("Task:1 {}", set.len());
+    println!("Task 1: {}", set.len());
 }
 
 fn distance(head: (i32, i32), tail: (i32, i32)) -> i32 {
