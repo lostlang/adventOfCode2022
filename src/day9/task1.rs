@@ -10,9 +10,10 @@ pub fn main() {
     set.insert(head);
 
     for (direction, distance) in values {
-        for i in 0..distance {
-            move_head(&mut head, &direction);
-            move_tail(&mut tail, &head, &mut set);
+        for _ in 0..distance {
+            head = move_head(head, &direction);
+            tail = move_tail(tail, head);
+            set.insert(tail);
         }
     }
 
@@ -26,33 +27,34 @@ fn distance(head: (i32, i32), tail: (i32, i32)) -> i32 {
     cmp::max(x, y)
 }
 
-fn move_head(head: &mut (i32, i32), direction: &day9::readfiels::Direction) {
+pub fn move_head(head: (i32, i32), direction: &day9::readfiels::Direction) -> (i32, i32) {
     match direction {
-        day9::readfiels::Direction::Up => head.1 += 1,
-        day9::readfiels::Direction::Down => head.1 -= 1,
-        day9::readfiels::Direction::Left => head.0 -= 1,
-        day9::readfiels::Direction::Right => head.0 += 1,
+        day9::readfiels::Direction::Up => (head.0, head.1 + 1),
+        day9::readfiels::Direction::Down => (head.0, head.1 - 1),
+        day9::readfiels::Direction::Left => (head.0 - 1, head.1),
+        day9::readfiels::Direction::Right => (head.0 + 1, head.1),
     }
 }
 
-fn move_tail(tail: &mut (i32, i32), head: &(i32, i32), set: &mut HashSet<(i32, i32)>) {
-    let distance = distance(*head, *tail);
+pub fn move_tail(tail: (i32, i32), head: (i32, i32)) -> (i32, i32) {
+    let distance = distance(head, tail);
 
     if distance > 1 {
-        if head.0 - tail.0 > 1 {
-            tail.0 += 1;
-            tail.1 = head.1;
-        } else if head.0 - tail.0 < -1 {
-            tail.0 -= 1;
-            tail.1 = head.1;
-        } else if head.1 - tail.1 > 1 {
-            tail.0 = head.0;
-            tail.1 += 1;
-        } else if head.1 - tail.1 < -1 {
-            tail.0 = head.0;
-            tail.1 -= 1;
+        let x = head.0 - tail.0;
+        let y = head.1 - tail.1;
+
+        match (x, y) {
+            (2, 2) => return (tail.0 + 1, tail.1 + 1),
+            (2, -2) => return (tail.0 + 1, tail.1 - 1),
+            (-2, 2) => return (tail.0 - 1, tail.1 + 1),
+            (-2, -2) => return (tail.0 - 1, tail.1 - 1),
+            (2, _) => return (tail.0 + 1, head.1),
+            (-2, _) => return (tail.0 - 1, head.1),
+            (_, 2) => return (head.0, tail.1 + 1),
+            (_, -2) => return (head.0, tail.1 - 1),
+            _ => panic!("Unknown direction"),
         }
     }
 
-    set.insert(*tail);
+    return tail;
 }
