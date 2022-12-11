@@ -3,11 +3,11 @@ use std::io::{BufRead, BufReader};
 
 #[derive(Debug)]
 pub struct Monkey {
-    pub items: Vec<i32>,
+    pub items: Vec<i128>,
     pub operation: Operation,
     pub operands: (Operand, Operand),
-    pub test: i32,
-    pub move_to: (i32, i32),
+    pub test: i128,
+    pub move_to: (i128, i128),
 }
 
 impl Monkey {
@@ -15,9 +15,9 @@ impl Monkey {
         let items = lines[1]
             .split_whitespace()
             .map(|x| x.replace(",", ""))
-            .filter(|x| x.parse::<i32>().is_ok())
-            .map(|x| x.parse::<i32>().unwrap())
-            .collect::<Vec<i32>>();
+            .filter(|x| x.parse::<i128>().is_ok())
+            .map(|x| x.parse::<i128>().unwrap())
+            .collect::<Vec<i128>>();
 
         let operation = lines[2].split_whitespace().collect::<Vec<&str>>();
         let operands = (
@@ -55,10 +55,13 @@ impl Operation {
         }
     }
 
-    pub fn get_value(&self, items: (i32, i32)) -> i32 {
+    pub fn get_value(&self, items: (i128, i128)) -> i128 {
         match self {
             Operation::Add => items.0 + items.1,
-            Operation::Multiply => items.0 * items.1,
+            Operation::Multiply => {
+                // println!("{} * {}", items.0, items.1);
+                items.0 * items.1
+            }
         }
     }
 }
@@ -66,18 +69,18 @@ impl Operation {
 #[derive(Debug)]
 pub enum Operand {
     SelfOperand,
-    Value(i32),
+    Value(i128),
 }
 
 impl Operand {
     fn new(operand: String) -> Operand {
-        match operand.parse::<i32>() {
+        match operand.parse::<i128>() {
             Ok(value) => Operand::Value(value),
             Err(_) => Operand::SelfOperand,
         }
     }
 
-    pub fn get_value(&self, val: i32) -> i32 {
+    pub fn get_value(&self, val: i128) -> i128 {
         match self {
             Operand::SelfOperand => val,
             Operand::Value(value) => *value,
@@ -105,9 +108,9 @@ pub fn read() -> Vec<Monkey> {
     vec
 }
 
-fn get_int(s: &String) -> i32 {
+fn get_int(s: &String) -> i128 {
     s.split_whitespace()
-        .filter(|x| x.parse::<i32>().is_ok())
-        .map(|x| x.parse::<i32>().unwrap())
-        .collect::<Vec<i32>>()[0]
+        .filter(|x| x.parse::<i128>().is_ok())
+        .map(|x| x.parse::<i128>().unwrap())
+        .collect::<Vec<i128>>()[0]
 }
