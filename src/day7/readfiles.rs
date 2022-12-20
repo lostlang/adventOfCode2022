@@ -4,7 +4,7 @@ use std::fs;
 use std::io::{BufRead, BufReader};
 use std::rc::Rc;
 
-pub fn read() {
+pub fn read() -> Rc<RefCell<Directory>> {
     let file = fs::File::open("./dataset/day7.txt").unwrap();
     let reader = BufReader::new(file);
 
@@ -18,17 +18,6 @@ pub fn read() {
             let command = Command::new(&vec);
             match command {
                 Command::Ls => {
-                    let dirs = Directory::new_vec(vec.clone());
-
-                    for d in 0..dirs.len() {
-                        let d = Rc::clone(&dirs[d]);
-                        d.borrow_mut().set_back(Rc::clone(&dir));
-                    }
-
-                    for d in dirs {
-                        dir.borrow_mut().add_dir(d);
-                    }
-
                     let files = File::new_vec(vec);
 
                     for f in files {
@@ -37,14 +26,11 @@ pub fn read() {
                 }
                 Command::Cd(CD::Up) => {
                     if dir.borrow().get_name() != "/" {
-                        print!("Up - Befor {:?} ", dir.borrow().get_name());
                         let d = dir.borrow().get_back();
                         dir = Rc::clone(&d);
-                        println!("After {:?}", dir.borrow().get_name());
                     }
                 }
                 Command::Cd(CD::Down(down)) => {
-                    print!("Down - Befor {:?} ", dir.borrow().get_name());
                     let index = dir.borrow().contain_dir(&down);
 
                     match index {
@@ -53,15 +39,12 @@ pub fn read() {
                             dir = Rc::clone(&d);
                         }
                         None => {
-                            print!("ERROR ");
                             let d = Rc::new(RefCell::new(Directory::new(down)));
                             d.borrow_mut().set_back(Rc::clone(&dir));
                             dir.borrow_mut().add_dir(Rc::clone(&d));
                             dir = Rc::clone(&d);
                         }
                     }
-
-                    println!("After {:?}", dir.borrow().get_name());
                 }
             }
 
@@ -72,19 +55,12 @@ pub fn read() {
     }
 
     loop {
-        if dir.borrow().get_name() == "root" {
+        if dir.borrow().get_name() == "/" {
             break;
         }
-        println!(
-            "{}: {}",
-            dir.borrow().get_name(),
-            dir.borrow().get_back().borrow().get_name()
-        );
         let d = dir.borrow().get_back();
         dir = Rc::clone(&d);
     }
 
-    println!("Total: {}", dir.borrow().get_len());
-    println!("Total: {}", dir.borrow().get_name());
-    // println!("{:?}", dir);
+    dir
 }
